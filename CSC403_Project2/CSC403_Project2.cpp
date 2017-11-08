@@ -13,13 +13,13 @@ string getDataBits(string binNumber) {
 	int length = binNumber.length();
 	int binCount = 3;
 	int stringPosition = 0;
-	
 
-	while (binCount <= length) {		
+
+	while (binCount <= length) {
 		stringPosition = length - binCount;
 		dataBits.insert(0, 1, binNumber.at(stringPosition));
 		binCount++;
-		if ((binCount & (binCount-1))==0) {
+		if ((binCount & (binCount - 1)) == 0) {
 			binCount++;
 		}
 	}
@@ -54,7 +54,7 @@ string getCalculatedCheckBits(string binNumber) {
 		parity = 0; //Set parity to 0
 		binCount = powerOfTwo; // Move to start at the next power of 2
 		while (binCount <= length) {
-			
+
 			for (int i = 0; i < powerOfTwo && binCount <= length; i++) {
 				while ((binCount & (binCount - 1)) == 0) { //Skip if power of 2
 					binCount++;
@@ -70,7 +70,7 @@ string getCalculatedCheckBits(string binNumber) {
 				binCount++;
 			}
 			binCount += powerOfTwo; //Move to the next position in bin number
-		}	
+		}
 		if (parity % 2 == 0) {
 			calcCheckBits.insert(0, "0");
 		}
@@ -82,15 +82,15 @@ string getCalculatedCheckBits(string binNumber) {
 
 	return calcCheckBits;
 }
-string getCorrectedDataBits(string dataBits, string checkBits, string calcedCheckBits) {
+string getCorrectedBinNumber(string binNumber, string checkBits, string calcedCheckBits) {
 	int wrongBit = 0;
-	string wrongBitBin= "";
-	string correctedDataBits;
+	string wrongBitBin = "";
+	string correctedBinNumber;
 	if (checkBits == calcedCheckBits) {
-		correctedDataBits = "OK";
+		correctedBinNumber = "OK";
 	}
 	else {
-		
+
 		for (int i = 0; i < checkBits.length(); i++) {
 			if (checkBits.at(i) == calcedCheckBits.at(i)) {
 				wrongBitBin.append("0");
@@ -100,25 +100,23 @@ string getCorrectedDataBits(string dataBits, string checkBits, string calcedChec
 			}
 		}
 		int j = 0;
-		for (int i = wrongBitBin.length()-1; i >0; i--) {
+		for (int i = wrongBitBin.length() - 1; i >0; i--) {
 			if (wrongBitBin.at(i) == '1') {
 				wrongBit += pow(2, j);
 			}
 			j++;
 		}
-		wrongBit = dataBits.length() - wrongBit; //Flip to count from front
-		if (dataBits.at(wrongBit) == '1') { //Insert the right bit			
-			correctedDataBits = dataBits.insert(wrongBit,"0");
+		wrongBit = binNumber.length() - wrongBit; //Flip to count from front
+		if (binNumber.at(wrongBit) == '1') { //Insert the right bit			
+			correctedBinNumber = binNumber.insert(wrongBit, "0");
 		}
 		else {
-			correctedDataBits = dataBits.insert(wrongBit, "1");
+			correctedBinNumber = binNumber.insert(wrongBit, "1");
 		}
-		correctedDataBits = dataBits.erase(wrongBit+1);//Delete the bad bit
-		//correctedDataBits = calcedCheckBits.replace(wrongBit, "1");
-
+		correctedBinNumber = binNumber.erase(wrongBit+1,1);//Delete the bad bit
 	}
 
-	return correctedDataBits;
+	return correctedBinNumber;
 }
 
 int main() {
@@ -128,9 +126,9 @@ int main() {
 	//cin >> fileName; **********************MAKE SURE TO ENABLE THIS **********
 	ifstream inFile("inputFile.txt");  // Open the file containing data.
 
-	string binNumber,dataBits,checkBits,calcedCheckBits;
+	string binNumber, dataBits, checkBits, calcedCheckBits;
 	inFile >> binNumber; //Seed read
-	while (binNumber != "quit") {		
+	while (binNumber != "quit") {
 		cout << binNumber << " ";
 		dataBits = getDataBits(binNumber);
 		checkBits = getCheckBits(binNumber);
@@ -138,7 +136,7 @@ int main() {
 		cout << dataBits << " ";
 		cout << checkBits << " ";
 		cout << calcedCheckBits << " ";
-		cout << getCorrectedDataBits(dataBits, checkBits, calcedCheckBits) << endl;
+		cout << getCorrectedBinNumber(binNumber, checkBits, calcedCheckBits) << endl;
 		inFile >> binNumber; // Read the next number
 
 	}
