@@ -5,44 +5,34 @@
 
 using namespace std;
 
-
-
-string getDataBits(string binNumber) {
-
+string getDataBits(string binNumber) { //Return the data bits from a bin number in string form
 	string dataBits = "";
 	int length = binNumber.length();
 	int binCount = 3;
 	int stringPosition = 0;
-
-
 	while (binCount <= length) {
 		stringPosition = length - binCount;
 		dataBits.insert(0, 1, binNumber.at(stringPosition));
 		binCount++;
-		if ((binCount & (binCount - 1)) == 0) {
+		if ((binCount & (binCount - 1)) == 0) { //If the bit number is a multiple of 2 skip it
 			binCount++;
 		}
 	}
-
 	return dataBits;
 }
-string getCheckBits(string binNumber) {
-
+string getCheckBits(string binNumber) { //Return the check bits from a bin number in string form
 	string checkBits = "";
 	int length = binNumber.length();
 	int powerOfTwo = 1;
 	int stringPosition = 0;
-
-	while (powerOfTwo < length) {
+	while (powerOfTwo < length) { //Get the bit at the next power of 2
 		stringPosition = length - powerOfTwo;
 		checkBits.insert(0, 1, binNumber.at(stringPosition));
 		powerOfTwo *= 2;
 	}
-
 	return checkBits;
 }
-string getCalculatedCheckBits(string binNumber) {
-
+string getCalculatedCheckBits(string binNumber) { //Calculate the check bits based on the data bits
 	string calcCheckBits = "";
 	int length = binNumber.length();
 	int powerOfTwo = 1;
@@ -82,6 +72,7 @@ string getCalculatedCheckBits(string binNumber) {
 
 	return calcCheckBits;
 }
+	//Correct the binary number based on the check bits and calculated check bits
 string getCorrectedBinNumber(string binNumber, string checkBits, string calcedCheckBits) {
 	int wrongBit = 0;
 	string wrongBitBin = "";
@@ -90,7 +81,7 @@ string getCorrectedBinNumber(string binNumber, string checkBits, string calcedCh
 		correctedBinNumber = "OK";
 	}
 	else {
-
+			//Find the parity of the calculated check bits and check bits
 		for (int i = 0; i < checkBits.length(); i++) {
 			if (checkBits.at(i) == calcedCheckBits.at(i)) {
 				wrongBitBin.append("0");
@@ -100,7 +91,8 @@ string getCorrectedBinNumber(string binNumber, string checkBits, string calcedCh
 			}
 		}
 		int j = 0;
-		for (int i = wrongBitBin.length() - 1; i >0; i--) {
+			//Calculate the parity in decimal
+		for (int i = wrongBitBin.length() - 1; i >= 0; i--) {
 			if (wrongBitBin.at(i) == '1') {
 				wrongBit += pow(2, j);
 			}
@@ -118,12 +110,10 @@ string getCorrectedBinNumber(string binNumber, string checkBits, string calcedCh
 
 	return correctedBinNumber;
 }
-
 int main() {
-
 	string fileName;
 	cout << "Please enter the name of an input file: " << endl;
-	//cin >> fileName; **********************MAKE SURE TO ENABLE THIS **********
+	cin >> fileName; 
 	ifstream inFile("inputFile.txt");  // Open the file containing data.
 
 	string binNumber, dataBits, checkBits, calcedCheckBits;
@@ -138,7 +128,6 @@ int main() {
 		cout << calcedCheckBits << " ";
 		cout << getCorrectedBinNumber(binNumber, checkBits, calcedCheckBits) << endl;
 		inFile >> binNumber; // Read the next number
-
 	}
 	return 0;
 }
