@@ -23,5 +23,8 @@
     <Text Include="inputFile.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="read.me.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

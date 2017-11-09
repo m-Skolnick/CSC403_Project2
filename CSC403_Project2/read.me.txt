@@ -1,0 +1,11 @@
+Name: Micaiah Skolnick
+Date: 11/08/17
+Platform: Microsoft Visual Studio 2015 (Windows 10 - 64bit)
+No special steps should be required to compile project.
+
+Summary:
+1. The program prompts the user to enter the filename of the file containing data
+2. The program then reads each binary number as a string
+3. The string is traversed to pull out the data bits, check bits, and calculated check bits
+4. The results are printed to the user. If the calculated check bits and actual check bits do not match,
+	the correced binary string is printed.
